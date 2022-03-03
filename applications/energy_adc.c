@@ -51,7 +51,7 @@ static void check_dump_energy(void *parameter)
     }
      rt_adc_disable(adc_dev, ADC_DEV_CHANNEL);
 
-//     rt_kprintf("vol:%d  voltage:%d  dump_energy:%d\n",vol,(int)Voltage,(int)dump_energy);
+     rt_kprintf("vol:%d  voltage:%d  dump_energy:%d\n",vol,(int)Voltage,(int)dump_energy);
      rt_thread_mdelay(200);
 
  }

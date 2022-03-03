@@ -46,6 +46,7 @@ extern double angle_y;
 extern int step_motor[2]; //步进电机运动指令 1 正转  2 反转  3 停止
 extern int pwm_motor[2]; //主侧电机运动指令
 extern int line_step_motor;  //拉线步进
+extern int relay1;  //继电器
 extern double deep;  // 深度
 extern int tem;  // 温度
 int thread_manager(void);

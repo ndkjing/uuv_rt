@@ -40,7 +40,7 @@ int tem=0;  // 温度
 int step_motor[2]={3,3}; //步进电机运动指令 1 正转  2 反转  3 停止
 int pwm_motor[2]={1500,1500}; //主侧电机运动指令
 int line_step_motor=3;   //拉线步进电机 1 正转放线  2 反转收线  3 停止
-
+int relay1=2;   //继电器数据  1开  2关
 static rt_thread_t t_manager = RT_NULL;
 
 void manager(void *parameter)
@@ -83,7 +83,7 @@ void manager(void *parameter)
         if (last_angle_x!=angle_x||last_angle_y!=angle_y||last_current_theta!=current_theta||last_lng!=lng||last_lat!=lat)
         {
             char pos_buf[50];
-            sprintf(pos_buf, "P%d,%d,%d,%f,%fZ\n",(int)angle_y,(int)angle_x,current_theta,lng,lat);
+            sprintf(pos_buf, "P%d,%d,%dZ\n",(int)angle_y,(int)angle_x,current_theta);
 //            printf("pos buf %s\n",pos_buf);
             last_angle_x=angle_x;
             last_angle_y=angle_y;
@@ -93,15 +93,16 @@ void manager(void *parameter)
             send_data(pos_buf,50);
             rt_thread_mdelay(10);
         }
+        control_led(relay1);
         set_pwm(pwm_motor[0], pwm_motor[1]);   // 控制无刷电机
-        set_step_motor(step_motor[0],step_motor[1]);  // 控制上升下降步进电机
-        set_line_step_motor(line_step_motor);        // 控制收线步进电机
-        printf("step_motor[0] :%d,step_motor[1] :%d\n",step_motor[0],step_motor[1]);
+//        printf("step_motor[0] :%d,step_motor[1] :%d\n",step_motor[0],step_motor[1]);
 //        printf("pwm_motor[0] :%d,pwm_motor[1] :%d\n",pwm_motor[0],pwm_motor[1]);
 //        printf("line_step_motor:%d\n",line_step_motor);
         rt_thread_mdelay(50);
     }
 }
+
+
 
 /* 线程 */
 int thread_manager(void)

@@ -26,7 +26,7 @@
 int main(void)
 {
 //    init_relay();
-//    init_led();
+    init_led();
     thread_pwm();
     thread_deep();
     thread_lora_24();
@@ -35,9 +35,5 @@ int main(void)
 //    thread_energy();
     thread_setp();
     thread_imu();
-//    set_step_motor(1,1);
-//    rt_thread_mdelay(2000);
-//    set_step_motor(2,1);
-//    i2c_aht10_sample();
     return RT_EOK;
 }

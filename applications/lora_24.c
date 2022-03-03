@@ -85,6 +85,10 @@ static void lora_rec(void *parameter)
     char pwm1_s[5]={0};
     char pwm2_s[5]={0};
     char line_s[5]={0};
+    char j_buffer[32]={0};//继电器数据
+    int j_buffer_index=0;//继电器索引
+    char j_s[5]={0};
+
     while (1)
     {
         while(rt_device_read(lora_serial,0, &lora_char, 1) != 1)
@@ -142,13 +146,33 @@ static void lora_rec(void *parameter)
             pwm_buffer_index+=1;
         }
               // 接收到完整数据 后分隔字符串处理
-        if (lora_char == 'Z' && pwm_buffer_index!=0) {
+        if (lora_char == 'Z' && pwm_buffer_index!=0)
+        {
             pwm_buffer[pwm_buffer_index] = '\0';
               sscanf(pwm_buffer,"P%[0-9],%[0-9]Z",pwm1_s,pwm2_s);
               pwm_motor[0] = atoi(pwm1_s);//直行
               pwm_motor[1] = atoi(pwm2_s);//转弯
             rt_kprintf("pwm_motor 0 %d pwm_motor 1  %d\r\n",pwm_motor[0],pwm_motor[1]);
               pwm_buffer_index =0;
+        }
+        // 继电器控制指令
+        if(lora_char=='J')
+        {
+            j_buffer[j_buffer_index]=lora_char;
+            j_buffer_index+=1;
+        }
+        else if (j_buffer_index !=0) {
+            j_buffer[j_buffer_index]=lora_char;
+            j_buffer_index+=1;
+        }
+        //如果接收到完整数据后分割字符串处理
+        if(lora_char=='Z'&&j_buffer_index!=0)
+        {
+            j_buffer[j_buffer_index] = '\0';
+            sscanf(j_buffer,"J%[0-9]Z",j_s);
+            relay1 = atoi(j_s);// 拉线步进
+            rt_kprintf("j_buffer: %d \r\n",relay1);
+            j_buffer_index =0;
         }
 
     }

@@ -22,9 +22,7 @@
 #define dir_line         GET_PIN(D, 15)  //3
 #define limit_switch_1        GET_PIN(C, 6)  //限位开关1
 #define limit_switch_2        GET_PIN(C, 7)  //限位开关2
-#define limit_switch_3        GET_PIN(D, 9)  //限位开关3
-#define limit_switch_4        GET_PIN(D, 10)  //限位开关4
+#define limit_switch_3        GET_PIN(D, 8)  //限位开关3
+#define limit_switch_4        GET_PIN(D, 9)  //限位开关4
 int thread_setp();
-void set_step_motor(int target_step1_,int target_step2_);
-void set_line_step_motor(int target_step);
 #endif /* APPLICATIONS_STEP_MOTOR_H_ */
